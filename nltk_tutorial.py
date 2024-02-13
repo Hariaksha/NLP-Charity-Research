@@ -62,8 +62,6 @@ def POS_tagging():
     tags = tokens_tag = pos_tag(tokenized_text)
     print(tags)
 
-
-
 def main():
     POS_tagging()
 
