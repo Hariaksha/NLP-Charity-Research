@@ -1,0 +1,13 @@
+Monday 2/5/2024 - Hari
+I wrote Python scripts this weekend to get the nonprofit name and mission statement from each Guidestar profile website. The script works only up to a certain point because Guidestar uses what I believe to be anti-scraping measures from Cloudflare that restrict my program from getting their data. Also, one important note is that not all nonprofits actually provide a mission statement to the Guidestar profile.
+This week, I will look into bypassing anti-scraping measures for Guidestar and start writing scripts to get mission statements from other websites. Options include searching the non-US nonprofits (like the Australia or UK ones). 
+If I cannot web scrape from Guidestar, buying the data from them may be a good path too.
+Dr. Price found an IRS database of tax-exempt organizations with EINs that will be very useful in future web-scraping scripts. I will focus on scraping data from Charity Navigator first, and I will also try to write a script to go to each actual nonprofit website and get the mission statement from the source.
+https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf
+This link above leads to a list of all nonprofit EINs and other useful data in spreadsheets.
+
+Sunday 2/11/2024 - Hari
+I figured out how to scrape without being blocked by the website's servers; I made my program slower so that I do not send too many requests at once and overload their servers. I am now able to scrape from GuideStar and Charity Navigator, but at a rate of only about 1 website/second. 
+I have the 51 spreadsheets listing all tax-exempt organizations from the states and DC, and I chose to scrape the Wyoming nonprofits first with guidestar_scraper.py because it only has about 5500 nonprofits (5500 seconds = 1.5 hours). Important to note is that over 3K of the 5.5K nonprofits did not provide GuideStar with a mission statement. I am going to write another Python script to have Charity Navigator fill in any possible mission statement gaps.
+Dr. Price suggests that many of the nonprofits with no mission statements will be smaller or inactive causes. 
+He also suggests that I focus on getting data from states with less nonprofits, for now. Some states have over 200K charities (200K seconds = 50+ hours) and I cannot keep my computer on for that long to scrape all of that, I will look into bots, virtual machines, or other computers/options to run the script.
