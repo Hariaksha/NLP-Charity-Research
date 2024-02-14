@@ -66,9 +66,9 @@ def populateGoodIDs():
     doc.close()
 
 def all():
-    filename = open('exempt_organizations_excel\eo_wy.csv') # CHANGE
+    filename = open('exempt_organizations_excel\eo_vt.csv') # CHANGE
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('guidestar/data/WY_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook('guidestar/data/VT_data.xlsx') # CHANGE
     ws = workbook.active
     ws2 = workbook.create_sheet("Skipped")
     ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
