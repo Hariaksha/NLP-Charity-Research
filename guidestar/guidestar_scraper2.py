@@ -72,7 +72,7 @@ def all():
     ws = workbook.active
     skipped = []
     for col in file:
-        time.sleep(0.6)
+        time.sleep(0.7) # 0.6 is too fast
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         r = requests.get(link) 
