@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import openpyxl
+import csv
 
 def scrape(IDs):
     ans = []
@@ -40,14 +41,16 @@ def populateIDs():
     doc.close()
 
 def main():
-    r = requests.get("https://www.guidestar.org/profile/63-1154984") 
-    soup = BeautifulSoup(r.content, 'html.parser') 
-    mission = soup.find('p', id="mission-statement").text
-    # location = soup.find('div', class_='description pt-3').find()
-    name = soup.find('h1', class_='profile-org-name').text.strip()
-    url = r.url
-    new_row = (name, url, mission)
-    print(new_row)
+    workbook = openpyxl.load_workbook('guidestar/data/WY_data.xlsx') # CHANGE
+    ws = workbook.active
+    skipped = []
+    summary = f"Skipped: {len(skipped)}"
+    new_row = [summary]
+    ws.append(new_row)
+    for id in skipped:
+        temp = [id]
+        ws.append(temp)
+    workbook.save('guidestar/data/WY_data.xlsx') # CHANGE
 
 if __name__=="__main__":
     main()

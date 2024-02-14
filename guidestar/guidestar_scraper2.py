@@ -70,23 +70,25 @@ def all():
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook('guidestar/data/WY_data.xlsx') # CHANGE
     ws = workbook.active
-    skipped = []
+    ws2 = workbook.create_sheet("Skipped")
+    ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
     for col in file:
-        time.sleep(0.7) # 0.6 is too fast
+        time.sleep(1) # 0.7 is too fast
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         r = requests.get(link) 
         soup = BeautifulSoup(r.content, 'html.parser')
         print(soup.title.text)
         if soup.title.text == "":
-            skipped.append(ein)
+            new_row = (ein, col['NAME'], link)
+            ws2.append(new_row)
             continue
         mission = soup.find('p', id="mission-statement").text
         if mission == "This organization has not provided GuideStar with a mission statement.":
             r2 = requests.get(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
             soup2 = BeautifulSoup(r2.content, 'html.parser')
-            if soup.find('span', class_="not-truncate") != None:
-                mission = soup.find('span', class_="not-truncate").text
+            if soup2.find('span', class_="not-truncate") != None:
+                mission = soup2.find('span', class_="not-truncate").text
         name = soup.find('h1', class_='profile-org-name').text.strip()
         url = ""
         if soup.find('a', class_='hide-print-url') != None:
@@ -98,9 +100,6 @@ def all():
         ntee = col['NTEE_CD']
         new_row = (ein, name, street, city, state, zip, link, url, ntee, mission)
         ws.append(new_row)
-    ws.append((f"Skipped: {len(skipped)}"))
-    for id in skipped:
-        ws.append((id))
     workbook.save('guidestar/data/WY_data.xlsx') # CHANGE
         
 def main():
