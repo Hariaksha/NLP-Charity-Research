@@ -66,14 +66,14 @@ def populateGoodIDs():
     doc.close()
 
 def all():
-    filename = open('exempt_organizations_excel\eo_vt.csv') # CHANGE
+    filename = open('exempt_organizations_excel\eo_ak.csv') # CHANGE
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('guidestar/data/VT_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook('guidestar/data/AK_data.xlsx') # CHANGE
     ws = workbook.active
     ws2 = workbook.create_sheet("Skipped")
     ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
     for col in file:
-        time.sleep(1) # 0.7 is too fast
+        time.sleep(0.85) # 0.7 is too fast
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         r = requests.get(link) 
@@ -100,7 +100,7 @@ def all():
         ntee = col['NTEE_CD']
         new_row = (ein, name, street, city, state, zip, link, url, ntee, mission)
         ws.append(new_row)
-    workbook.save('guidestar/data/WY_data.xlsx') # CHANGE
+    workbook.save('guidestar/data/AK_data.xlsx') # CHANGE
         
 def main():
     all()
