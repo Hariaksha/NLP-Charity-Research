@@ -31,39 +31,14 @@ def scrape():
 def addToExcel(rows):
     workbook = openpyxl.load_workbook('data.xlsx')
     ws = workbook.active
-    print('got to excel method')
     for row in rows:
         ws.append(row)
     workbook.save('data.xlsx')
-
-def populateAllIDs():
-    doc = open('guidestar.txt', 'a')
-
-    for i in range(18796978, 1000000000):
-        ein = format(i, '09d')
-        ein = ein[0:2] + '-' + ein[2:]
-        ein = 'https://www.guidestar.org/profile/' + ein
-        doc.write(ein + '\n')
-        print('populated: ' + str(i))
-    doc.close()
 
 def numToEIN(num):
     ans = format(num, '09d')
     ans = ans[0:2] + '-' + ans[2:]
     return ans
-
-def populateGoodIDs():
-    doc = open('guidestar_good_links.txt', 'a')
-
-    for i in range(100): #1000000000
-        ein = numToEIN(i)   
-        link = 'https://www.guidestar.org/profile/' + ein
-        r = requests.get(link) 
-        soup = BeautifulSoup(r.content, 'html.parser')
-        if soup.find('p', id="mission-statement") != None:
-            doc.write(link + '\n')
-            print('populated: ' + str(i))
-    doc.close()
 
 def all():
     filename = open('exempt_organizations_excel\eo_ak.csv') # CHANGE
