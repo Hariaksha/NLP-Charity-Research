@@ -4,43 +4,12 @@ import openpyxl
 import csv
 import time
 
-def scrape():
-    ans = []
-    doc = open('EINs.txt')
-
-    while True:
-        line = doc.readline()
-        if not line:
-            break
-        
-        r = requests.get(line) 
-        soup = BeautifulSoup(r.content, 'html.parser') 
-
-        if soup.find('p', id="mission-statement") == None:
-            continue
-        mission = soup.find('p', id="mission-statement").text
-        # location = soup.find('div', class_='description pt-3').find()
-        name = soup.find('h1', class_='profile-org-name').text.strip()
-        url = r.url
-        new_row = (name, url, mission)
-        ans.append(new_row)
-        print('scraped: ' + id)
-    doc.close()
-    return ans
-    
-def addToExcel(rows):
-    workbook = openpyxl.load_workbook('data.xlsx')
-    ws = workbook.active
-    for row in rows:
-        ws.append(row)
-    workbook.save('data.xlsx')
-
 def numToEIN(num):
     ans = format(num, '09d')
     ans = ans[0:2] + '-' + ans[2:]
     return ans
 
-def all():
+def main():
     filename = open('exempt_organizations_excel\eo_ak.csv') # CHANGE
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook('guidestar/data/AK_data.xlsx') # CHANGE
@@ -76,9 +45,6 @@ def all():
         new_row = (ein, name, street, city, state, zip, link, url, ntee, mission)
         ws.append(new_row)
     workbook.save('guidestar/data/AK_data.xlsx') # CHANGE
-        
-def main():
-    all()
     
 if __name__=="__main__":
     main()
