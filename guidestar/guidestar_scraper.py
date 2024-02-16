@@ -4,6 +4,15 @@ import openpyxl
 import csv
 import time
 
+def check_internet(url='http://www.google.com', timeout=5):
+    try:
+        # Try to request Google. If successful, internet is working.
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        # Internet is not working.
+        return False
+
 def numToEIN(num):
     ans = format(num, '09d')
     ans = ans[0:2] + '-' + ans[2:]
@@ -17,7 +26,10 @@ def main():
     ws2 = workbook.create_sheet("Skipped")
     ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
     for col in file:
-        time.sleep(0.85) # 0.7 is too fast
+        # while check_internet() is False:
+        #     print("Connection lost")
+        #     time.sleep(1)
+        time.sleep(0.84) # 0.7 is too fast
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         r = requests.get(link) 
