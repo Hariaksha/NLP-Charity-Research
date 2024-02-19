@@ -1,4 +1,4 @@
-Monday 2/5/2024 - Hari
+**Monday 2/5/2024 - Hari**
 
 I wrote Python scripts this weekend to get the nonprofit name and mission statement from each Guidestar profile website. The script works only up to a certain point because Guidestar uses what I believe to be anti-scraping measures from Cloudflare that restrict my program from getting their data. Also, one important note is that not all nonprofits actually provide a mission statement to the Guidestar profile.
 
@@ -12,7 +12,7 @@ https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-f
 
 This link above leads to a list of all nonprofit EINs and other useful data in spreadsheets.
 
-Sunday 2/11/2024 - Hari
+**Sunday 2/11/2024 - Hari**
 
 I figured out how to scrape without being blocked by the website's servers; I made my program slower so that I do not send too many requests at once and overload their servers. I am now able to scrape from GuideStar and Charity Navigator, but at a rate of only about 1 website/second. 
 
