@@ -21,3 +21,11 @@ I have the 51 spreadsheets listing all tax-exempt organizations from the states 
 Dr. Price suggests that many of the nonprofits with no mission statements will be smaller or inactive causes. 
 
 He also suggests that I focus on getting data from states with less nonprofits, for now. Some states have over 200K charities (200K seconds = 50+ hours) and I cannot keep my computer on for that long to scrape all of that, I will look into bots, virtual machines, or other computers/options to run the script.
+
+**Monday 2/19/2024 - Hari**
+
+I have been running my web scraper script whenever I have a chance, and I have gathered the data from 9 US states. I added  more research to my literature review; this time I added research about linguistic structures and keywords affecting sales/fundraising in marketing. This research can help explain why researching language of mission statements is important to increasing charitable giving. I also applied to The University of Alabama's URCA, an undergraduate research conference; I will present a poster about my research if I am accepted.
+
+I have not yet looked into getting a virtual machine because I have been busy. I will get one when I get a chance; this will help me to run the script uninterrupted and gather the data faster.
+
+I am learning NLP techniques with several Python libraries, so far including NLTK, Regex, and spaCy.

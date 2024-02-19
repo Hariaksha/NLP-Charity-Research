@@ -19,9 +19,9 @@ def numToEIN(num):
     return ans
 
 def main():
-    filename = open('exempt_organizations/eo_mt.csv') # CHANGE
+    filename = open('exempt_organizations/eo_ne.csv') # CHANGE
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('guidestar/data/MT_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook('guidestar/data/NE_data.xlsx') # CHANGE
     ws = workbook.active
     ws2 = workbook.create_sheet("Skipped")
     ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
@@ -56,7 +56,7 @@ def main():
         ntee = col['NTEE_CD']
         new_row = (ein, name, street, city, state, zip, link, url, ntee, mission)
         ws.append(new_row)
-    workbook.save('guidestar/data/MT_data.xlsx') # CHANGE
+    workbook.save('guidestar/data/NE_data.xlsx') # CHANGE
     
 if __name__=="__main__":
     main()
