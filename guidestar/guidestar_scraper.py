@@ -4,7 +4,7 @@ import openpyxl
 import csv
 import time
 
-def check_internet(url='http://www.google.com', timeout=5):
+def check_internet(url='https://www.google.com', timeout=5):
     try:
         # Try to request Google. If successful, internet is working.
         _ = requests.get(url, timeout=timeout)
@@ -25,7 +25,12 @@ def main():
     ws = workbook.active
     ws2 = workbook.create_sheet("Skipped")
     ws2.append(["Skipped EIN", "Name from IRS Spreadsheet", "Guidestar Link"])
+    count = 0
     for col in file:
+        if count == 100:
+            break
+        else:
+            count += 1
         # while check_internet() is False:
         #     print("Connection lost")
         #     time.sleep(1)
@@ -35,7 +40,8 @@ def main():
         r = requests.get(link) 
         soup = BeautifulSoup(r.content, 'html.parser')
         print(soup.title.text)
-        if soup.title.text == "":
+        if soup.title.text == "": 
+            # if GuideStar does not have a page for this org, add it to the skipped list
             new_row = (ein, col['NAME'], link)
             ws2.append(new_row)
             continue
@@ -49,12 +55,20 @@ def main():
         url = ""
         if soup.find('a', class_='hide-print-url') != None:
             url = soup.find('a', class_='hide-print-url').text
+        # revenue = ""
+        # if soup.find('td', class_='ft-value total-revenue') != None:
+        #     revenue = soup.find('td', class_='ft-value total-revenue').text
+        # fiscal_year = ""
+        # if soup.find('td', class_='source m-0') != None:
+        #     x = soup.findAll('td', class_='source m-0')
+        #     fiscal_year = x[0][len(x[0])-4:len(x[0])]
+        revenue = col['REVENUE_AMT']
         street = col['STREET']
         city = col['CITY']
         state = col['STATE']
         zip = col['ZIP']
         ntee = col['NTEE_CD']
-        new_row = (ein, name, street, city, state, zip, link, url, ntee, mission)
+        new_row = (ein, name, street, city, state, zip, link, url, ntee, revenue, mission)
         ws.append(new_row)
     workbook.save('guidestar/data/NE_data.xlsx') # CHANGE
     

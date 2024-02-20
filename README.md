@@ -8,4 +8,4 @@ The 'tutorials' folder contains files that I used to learn how to use various li
 
 The 'exempt_organizations' folder contains information in CSV files from the United States Internal Revenue Service about tax-exempt organizations. This data was very useful in finding mission statements because they provide the EINs for every tax-exempt organization in the United States, separated by states and D.C.
 
-The data (mission statements, EINs, nonprofits' names, etc.) are found in the data folder in the guidestar folder. The United States data is organized by states and D.C. and labeled as (state abbreviation)_data.xlsx (example: AL_data.xlsx). There is also a master spreadsheet that combines the information from all of the 51 other spreadsheets.
+The data (mission statements, EINs, nonprofits' names, etc.) are found in the 'data' folder in the 'guidestar' folder. The United States data are organized by states and D.C. and labeled as (state abbreviation)_data.xlsx (example: AL_data.xlsx). There is also a master spreadsheet that combines the information from all of the 51 other spreadsheets.

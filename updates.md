@@ -28,4 +28,14 @@ I have been running my web scraper script whenever I have a chance, and I have g
 
 I have not yet looked into getting a virtual machine because I have been busy. I will get one when I get a chance; this will help me to run the script uninterrupted and gather the data faster.
 
-I am learning NLP techniques with several Python libraries, so far including NLTK, Regex, and spaCy.
+I am learning NLP techniques with several Python libraries, so far including NLTK, Regex, and spaCy. This will be important for when I start using NLP on the textual data.
+
+I have scraped the information from tax-exempt organizations from 9 states so far.
+
+**Tuesday 2/20/2024 - Hari**
+
+I checked the website with the IRS spreadsheets containing information about the tax-exempt organizations, and it was apparently updated on February 13, 2024, which is after I got the spreadsheets initially. 
+
+I changed my scraper script to get the revenue from each organization from the IRS spreadsheet.
+
+Because I have updated spreadsheets to scrape from and my script can now get valuable revenue information, I will restart the process of scraping to get all my data again. Basically, I am back at 0 states' tax-exempt organizations scraped.

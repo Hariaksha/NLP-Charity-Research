@@ -17,3 +17,9 @@ This study, titled "A Study on the Impact of Linguistic Persuasive Styles on the
 **https://doi.org/10.1027/1864-9335/a000319**
 
 This article, titled "Go Pro Bono: Prosocial Language as a Success Factor in Crowdfunding" was published in 2017. It analyzes in its first study 164,056 projects from the online crowdfunding platform Kickstarter and found that higher percentages of prosocial words in project descriptions led to more investors and increased chances of reaching funding goals. In its second study with 234 projects, they found that increased use of prosocial words increases the support people thought they would give to a project. Overall, results indicate that people want to invest their financial resources in ventures that contribute to prosocial goals. This is relevant to research involving mission statements of nonprofits, which aim to increase fundraising efforts and charitable giving.
+
+**https://www.legalforgood.com/post/ntee-codes-what-they-are-and-how-to-change-them**
+
+**https://urbaninstitute.github.io/nccs-legacy/ntee/ntee.html**
+
+These two links above are NOT research, but they explain what each NTEE code is. The NTEE code is a three-digit code that specifies an exempt organization’s purpose. The National Center for Charitable Statistics (NCSS) developed the National Taxonomy of Exempt Entities (NTEE) coding system as a way to categorize nonprofit organizations. The Internal Revenue Service (IRS) uses this system to classify tax exempt organizations into different categories according to their purpose. The NTEE code is a quick way for a potential donor or grantor to know what a charity does at a glance.
