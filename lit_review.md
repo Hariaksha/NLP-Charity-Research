@@ -2,6 +2,12 @@
 
 This paper was written by two PhD candidates at Virginia Tech in 2017. It was presented at the 2017 ASEE Annual Conference and Exposition. The research used NLP to compare College of Engineering mission statements. Specifically, it used an NLP-based textual data analytical approach to study the mission and vision statements with the purpose of understanding the key similarities and differences between the choice of words used in them. 59 engineering colleges (29 public, 30 private) in the United States were analyzed. Results of this study indicate that there is indeed a difference in word frequencies for public versus private engineering colleges. 
 
+**https://doi.org/10.1002/nml.21570**
+
+This paper was published in December 2023 by researchers in South Korea. The title is "Does mission concreteness make a difference in nonprofit performance? Automated text analysis approach to the importance of concrete mission statements."
+
+It is very similar to this research project, but it correlates concreteness of mission statements to organizational performance, while this research looks for linguistic structures and keywords that affect revenue or fundraising efforts of nonprofits.
+
 **https://clutejournals.com/index.php/JABR/article/view/10348/10392**
 
 This article was written by two professors at Marymount University and published in the Journal of Applied Business Research in May/June 2020. This research analyzed 772 mission/vision statements from companies using NLP. The data is categorized into 15 industry types. They say that they can see the 'features' of each industry and whay they embrace through these statements. They also demonstrate high predictive power via ML to determine an industry by looking only at a mission or vision statement.
