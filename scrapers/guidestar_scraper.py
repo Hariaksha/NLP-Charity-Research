@@ -26,7 +26,7 @@ def main():
     # MUST CHANGE STATE ABBREVIATION FOUR TIMES IN THIS FUNCTION
     filename = open('exempt_organizations/eo_de.csv') # CHANGE
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('guidestar/data/DE_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook('data/DE_data.xlsx') # CHANGE
     ws = workbook.active
     ws2 = workbook['Skipped']
     for col in file:
@@ -52,7 +52,7 @@ def main():
         url = '' if soup.find('a', class_='hide-print-url') == None else soup.find('a', class_='hide-print-url').text
         # CHANGE
         ws.append([ein, name, col['STREET'], col['CITY'], 'DE', col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
-    workbook.save('guidestar/data/DE_data.xlsx') # CHANGE
+    workbook.save('data/DE_data.xlsx') # CHANGE
     
 if __name__=="__main__":
     main()
