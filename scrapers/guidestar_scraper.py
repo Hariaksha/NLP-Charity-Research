@@ -24,13 +24,16 @@ def numToEIN(num):
 
 def main():
     # MUST CHANGE STATE ABBREVIATION FOUR TIMES IN THIS FUNCTION
-    filename = open('exempt_organizations/eo_de.csv') # CHANGE
+    filename = open('exempt_organizations/eo_me.csv') # CHANGE
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('data/DE_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook('data/ME_data.xlsx') # CHANGE
     ws = workbook.active
     ws2 = workbook['Skipped']
     for col in file:
-        time.sleep(0.95) # 0.84 is too fast
+        while check_internet() is False:
+            print("Connection lost")
+            time.sleep(5)   
+        time.sleep(0.90) # 0.84 is too fast
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         r = requests.get(link) 
@@ -44,15 +47,13 @@ def main():
         if mission == "This organization has not provided GuideStar with a mission statement.":
             r2 = requests.get(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
             soup2 = BeautifulSoup(r2.content, 'html.parser')
-            if soup2.find('span', class_="not-truncate") != None:
-                mission = soup2.find('span', class_="not-truncate").text
-        if mission == "This organization has not provided GuideStar with a mission statement.":
-            mission = ''
+            mission = mission if soup2.find('span', class_="not-truncate") == None else soup2.find('span', class_="not-truncate").text
+        mission = '' if mission == 'This organization has not provided GuideStar with a mission statement.' else mission
         name = soup.find('h1', class_='profile-org-name').text.strip()
         url = '' if soup.find('a', class_='hide-print-url') == None else soup.find('a', class_='hide-print-url').text
         # CHANGE
-        ws.append([ein, name, col['STREET'], col['CITY'], 'DE', col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
-    workbook.save('data/DE_data.xlsx') # CHANGE
+        ws.append([ein, name, col['STREET'], col['CITY'], 'ME', col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
+    workbook.save('data/ME_data.xlsx') # CHANGE
     
 if __name__=="__main__":
     main()
