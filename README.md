@@ -11,3 +11,5 @@ The 'scrapers' folder contains Python web scraping scripts, but this project onl
 The 'exempt_organizations' folder contains information in CSV files from the United States Internal Revenue Service about tax-exempt organizations. This data was very useful in finding mission statements because they provide the EINs for every tax-exempt organization in the United States, separated by states and D.C.
 
 The data (mission statements, EINs, nonprofits' names, etc.) are found in the 'data' folder. The United States data are organized by states and D.C. and labeled as (state abbreviation)_data.xlsx (example: AL_data.xlsx). There is also a master spreadsheet that combines the information from all of the 51 other spreadsheets.
+
+For any questions regarding this research, please feel free to email me: hgunda@crimson.ua.edu
