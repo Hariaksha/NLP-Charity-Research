@@ -2,6 +2,11 @@ import spacy # free open-source library for NLP in Python. features NER, POS tag
 from spacy import displacy # library for displaying sentence structures. works in jupyter notebook but not in vsc
 import numpy as np
 from spacy.matcher import Matcher
+from spacy.language import Language
+import re
+from spacy.tokens import Span
+from spacy.util import filter_spans
+# https://github.com/explosion/spaCy/issues/4577
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -38,7 +43,6 @@ for sent in doc.sents:
     
 # do this instead
 sentence1 = list(doc.sents)[0]
-print(sentence1)
 
 # exploring attribute types of tokens here
 token2 = sentence1[2]
@@ -53,7 +57,7 @@ print(token2.lemma_) # what word looks like with no inflection
 print(sentence1[12].lemma_) # in this example, prints 'know' when original text was 'known'. basically shows uninflected form of verb
 print(token2.morph) # morphological output ex. noun/verb type, etc.
 print(token2.pos_) # part of speech
-print(token2.dep_) # what role it plays in sentence (dependency) ex. noun/subject
+print(token2.dep_) # what role it plays in sentence (dependency) ex. nominal subject, verb
 print(token2.lang_) # world language
 
 text = "Mike enjoys playing football."
@@ -74,7 +78,6 @@ with open('tutorials/wiki_us.txt') as f:
     text = f.read()
 doc = nlp(text)
 sentence1 = list(doc.sents)[0]
-print(sentence1)
 
 # print words similar to given word
 your_word = 'country'
@@ -138,3 +141,124 @@ for ent in doc.ents:
     print(ent.text, ent.label_) # does not work because NER happens before entity ruler
 
 # toponym resolution = labeling things that can have many labels depending on context. for example, Mr. Deeds can be film or person. this is an unresolved problem in NLP, but it is better with ML than rules
+
+
+
+# now we learn to use the Matcher, which helps us find specific linguistic structures in text
+nlp = spacy.load('en_core_web_sm')
+matcher = Matcher(nlp.vocab)
+pattern = [{"LIKE_EMAIL":True}] # pattern is always a list of dictionaries
+matcher.add("EMAIL_ADDRESS", [pattern]) # add pattern to matcher
+doc = nlp("This is an email address: hari@gmail.com")
+matches = matcher(doc)
+print(matches) # each match is a tuple with three numbers: lexeme (id), start index, end index
+print(nlp.vocab[matches[0][0]].text) # this shows us what the lexeme is in the nlp.vocab
+
+
+# in example below, we use Matcher to recognize Martin Luther King Jr. and other multi-names as one entity/pattern in text. we also find all instances of proper nouns being followed by verbs
+with open('tutorials/wiki_mlk.txt', 'r') as f:
+    text = f.read()
+nlp = spacy.load('en_core_web_sm')
+matcher = Matcher(nlp.vocab)
+pattern = [{'POS': "PROPN", 'OP':'+'}, {'POS':'VERB'}] # looks for proper noun 1 or more times to create one pattern. greedy makes the matches have longest first instead of in sequential order
+matcher.add("PROPER_NOUN", [pattern], greedy='LONGEST')
+doc = nlp(text)
+matches = matcher(doc)
+matches.sort(key = lambda x: x[1]) # sort it by index 1 or start index so that matches are in sequential order in text again.
+print(len(matches))
+for match in matches[:10]:
+    print(match, doc[match[1]:match[2]])
+
+# we will now learn about custom components, which are things that you can modify to make spaCy capable of tasks it cannot do by default
+nlp = spacy.load("en_core_web_sm")
+doc = nlp("Britain is a place. Mary is a doctor.")
+for ent in doc.ents:
+    print(ent.text, ent.label_) # this prints; Britain GPE, Mary PERSON
+# maybe we want to get rid of every GPE tag and/or label it as LOC instead
+@Language.component('remove_gpe')
+def remove_gpe(doc): # this is a custom component
+    original_ents = list(doc.ents)
+    for ent in doc.ents:
+        if ent.label_ == 'GPE':
+            original_ents.remove(ent)
+    doc.ents = original_ents
+    return doc
+nlp.add_pipe("remove_gpe")
+nlp.analyze_pipes()
+
+
+# now we will learn basic usage of regex with spaCy
+# regex does not work across multiple tokens in current spaCy
+# use regex when pattern matching is independent of lemma, POS, other linguistic features of spaCy
+text = 'Paul Newman was an American actor, but Paul Hollywood is a British TV host. The name Paul is quite common.' 
+pattern = r'Paul [A-Z]\w+'
+matches = re.finditer(pattern, text)
+for match in matches:
+    print(match) # regex Match objects
+
+
+
+nlp = spacy.blank('en')
+doc = nlp(text)
+original_ents = list(doc.ents)
+mwt_ents = [] # multi word token entity
+for match in re.finditer(pattern, doc.text):
+    start, end = match.span()
+    span = doc.char_span(start, end)
+    print(span)
+    if span is not None:
+        mwt_ents.append((span.start, span.end, span.text))
+print(mwt_ents)
+for ent in mwt_ents:
+    start, end, name = ent
+    per_ent = Span(doc, start, end, label='PERSON')
+    original_ents.append(per_ent)
+doc.ents = original_ents
+print(doc.ents)
+for ent in doc.ents:
+    print(ent.text, ent.label_)
+
+
+# create custom component or pipe using regex. this works on multi token spans
+@Language.component("paul_ner")
+def paul_ner(doc):
+    pattern = r'Paul [A-Z]\w+'
+    original_ents = list(doc.ents)
+    mwt_ents = [] # multi word token entity
+    for match in re.finditer(pattern, doc.text):
+        start, end = match.span()
+        span = doc.char_span(start, end)
+        if span is not None:
+            mwt_ents.append((span.start, span.end, span.text))
+    for ent in mwt_ents:
+        start, end, name = ent
+        per_ent = Span(doc, start, end, label='PERSON')
+        original_ents.append(per_ent)
+    doc.ents = original_ents
+    return doc
+
+@Language.component("cinema_ner")
+def cinema_ner(doc):
+    pattern = r'Hollywood'
+    original_ents = list(doc.ents)
+    mwt_ents = [] # multi word token entity
+    for match in re.finditer(pattern, doc.text):
+        start, end = match.span()
+        span = doc.char_span(start, end)
+        if span is not None:
+            mwt_ents.append((span.start, span.end, span.text))
+    for ent in mwt_ents:
+        start, end, name = ent
+        per_ent = Span(doc, start, end, label='PERSON')
+        original_ents.append(per_ent)
+    filtered = filter_spans(original_ents) # if there is any span overlap like in 'Hollywood' and 'Paul Hollywood', preference goes to larger span so that there is no span overlap
+    doc.ents = filtered
+    return doc
+
+
+
+# add custom component to a blank spaCy model
+nlp2 = spacy.blank('em')
+nlp2.add_pipe('paul_ner')
+doc2 = nlp2(text)
+print(doc2.ents)
