@@ -39,8 +39,7 @@ def main():
             continue
         mission = soup.find('p', id="mission-statement").text 
         if mission == "This organization has not provided GuideStar with a mission statement.":
-            r2 = requests.get(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
-            soup2 = BeautifulSoup(r2.content, 'html.parser')
+            soup2 = get_request(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
             mission = mission if soup2.find('span', class_="not-truncate") == None else soup2.find('span', class_="not-truncate").text
         mission = '' if mission == 'This organization has not provided GuideStar with a mission statement.' else mission
         name = soup.find('h1', class_='profile-org-name').text.strip()
