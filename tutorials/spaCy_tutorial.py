@@ -1,10 +1,10 @@
 import spacy # free open-source library for NLP in Python. features NER, POS tagging, dependency parsing, word vectors, and more
 from spacy import displacy # library for displaying sentence structures. works in jupyter notebook but not in vsc
 import numpy as np
-from spacy.matcher import Matcher
+from spacy.matcher import Matcher, PhraseMatcher
 from spacy.language import Language
 import re
-from spacy.tokens import Span
+from spacy.tokens import Span, doc
 from spacy.util import filter_spans
 # https://github.com/explosion/spaCy/issues/4577
 
@@ -48,6 +48,7 @@ sentence1 = list(doc.sents)[0]
 token2 = sentence1[2]
 print(token2)
 print(token2.text)
+# print(token2.vector) # word vector. this does not work in the small english model
 print(token2.left_edge) # tells us that this is part of a multi-token span, and whatever is here is the word left to the entire span. prints "The" from "The United States" because the token is "States"
 print(token2.right_edge)
 print(token2.ent_type) # type of entity -> provides an integer
@@ -87,7 +88,10 @@ words = [nlp.vocab.strings[w] for w in ms[0][0]]
 distances = ms[2]
 print(words)
 
-# find similarity between two documents. similarity is calculated with word embeddings (semantic/pragmatic meanings of words)
+# find similarity between two documents. similarity is calculated with word vectors/embeddings (semantic/pragmatic meanings of words)
+# short phrases are better than long documents with many irrelevant words. this is because vectors for objects consisting of several tokens, like the Doc and Span, default to the average of their token vectors. we can make this better by removing stop words
+# Similarity depends on the application context
+# words for documents, spans, and tokens, and also between different objects
 doc1 = nlp("I like salty fries and hamburgers.")
 doc2 = nlp("Fast food tastes very good.")
 print(doc1, '<->', doc2, doc1.similarity(doc2))
@@ -262,3 +266,45 @@ nlp2 = spacy.blank('em')
 nlp2.add_pipe('paul_ner')
 doc2 = nlp2(text)
 print(doc2.ents)
+
+# Vocab: stores data shared across documents
+# all strings are encoded to hash values to save memory
+# code below shows string and hash values in vocab of nlp and doc
+doc = nlp("I love coffee")
+hash = nlp.vocab.strings["coffee"]
+print("hash value:", hash)
+print("string value:", nlp.vocab.strings[hash])
+print("hash value:", doc.vocab.strings["coffee"])
+
+# a Lexeme object is an entry in the vocab. contains context-independent info of a word. not context-dependent info like POS, dependencies, entities, etc.
+lexeme = nlp.vocab["coffee"]
+print(lexeme.text, lexeme.orth, lexeme.is_alpha) # the orth is the hash value
+
+# instantiate a Doc object manually like below
+nlp = spacy.blank('en')
+words = ['Hello', 'world', '!']
+spaces = [True, False, False] # spaces tell if a space follows each word
+document = doc(nlp.vocab, words=words, spaces=spaces)
+
+
+# a Span object is a slice of a doc consisting of one or more tokens. the object takes 3+ arguments: doc it refers to, start index, end index (exclusive)
+# we can make a Span manually 
+span = Span(doc, 0, 2)
+# create a Span with a label
+span_with_label = Span(doc, 0, 2, label="GREETING")
+# Add span to the doc.ents
+doc.ents = [span_with_label]
+
+# tip: convert results to strings as late as possible. Doc and Span are very powerful and optimized for performance because they give access to references and relationships of words and sentences.
+
+# PhraseMatcher is like regex or keyword search but gives access to the tokens
+# faster than Matcher but follows same API
+# pass in a Doc object instead of list of dictionaries as pattern
+matcher = PhraseMatcher(nlp.vocab)
+pattern = nlp("Golden Retriever")
+matcher.add("DOG", [pattern])
+document = nlp("I have a Golden Retriever")
+for match_id, start, end in matcher(doc):
+    span = doc[start:end]
+    print("Matched span:", span.text)
+
