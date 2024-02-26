@@ -10,11 +10,11 @@ It is very similar to this research project, but it correlates concreteness of m
 
 **https://doi.org/10.1016/j.emj.2005.12.010**
 
-This paper was published in December 2023 by Professor at Milligan University. It is titled "Relationship Between Mission Statement Components and ROA: A Study of Small-Cap Financial Firms." It investigates the correlation of mission statement comprehensiveness of 108 finance companies with economic performance, specifically Return on Assets (ROA). The study found that firms posting explicit mission statements on their websites had higher ROA means, firms including concern for public image had higher ROA growth, and firms including concern for employees had higher ROA means. However, mission statement comprehensiveness did not relate to firm performance.
+This paper was published in December 2023 by a Professor at Milligan University. It is titled "Relationship Between Mission Statement Components and ROA: A Study of Small-Cap Financial Firms." It investigates the correlation of mission statement comprehensiveness of 108 finance companies with economic performance, specifically Return on Assets (ROA). The study found that firms posting explicit mission statements on their websites had higher ROA means, firms including concern for public image had higher ROA growth, and firms including concern for employees had higher ROA means. However, mission statement comprehensiveness did not relate to firm performance.
 
 **https://clutejournals.com/index.php/JABR/article/view/10348/10392**
 
-This article was written by two professors at Marymount University and published in the Journal of Applied Business Research in May/June 2020. This research analyzed 772 mission/vision statements from companies using NLP. The data is categorized into 15 industry types. They say that they can see the 'features' of each industry and whay they embrace through these statements. They also demonstrate high predictive power via ML to determine an industry by looking only at a mission or vision statement.
+This article was written by two professors at Marymount University and published in the Journal of Applied Business Research in May/June 2020. This research analyzed 772 mission/vision statements from companies using NLP. The data is categorized into 15 industry types. They say that they can see the 'features' of each industry and what they embrace through these statements. They also demonstrate high predictive power via ML to determine an industry by looking only at a mission or vision statement.
 
 **https://doi.org/10.1177/0899764009339216**
 
