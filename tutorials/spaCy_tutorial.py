@@ -4,7 +4,7 @@ import numpy as np
 from spacy.matcher import Matcher, PhraseMatcher
 from spacy.language import Language
 import re
-from spacy.tokens import Span, doc
+from spacy.tokens import Span, doc, Token
 from spacy.util import filter_spans
 # https://github.com/explosion/spaCy/issues/4577
 
@@ -308,3 +308,67 @@ for match_id, start, end in matcher(doc):
     span = doc[start:end]
     print("Matched span:", span.text)
 
+# set custom attributes or add custom metadata to documents, tokens, and spans
+doc.set_extension("title", default=None)
+Token.set_extension("is_color", default=False)
+Span.set_extension("has_color", default=False)
+# three types of extensions: attribute extensions, property extensions and method extensions.
+# attribute extensions set a default value that can be overwritten like in the example below
+doc = nlp("The sky is blue.")
+doc[3]._.is_color = True
+# property extensions define a getter function and an optional setter
+# Define getter function
+def get_is_color(token):
+    colors = ["red", "yellow", "blue"]
+    return token.text in colors
+# Set extension on the Token with getter
+Token.set_extension("is_color", getter=get_is_color)
+document = nlp("The sky is blue.")
+print(document[3]._.is_color, "-", document[3].text)
+
+# another example: Define the getter function that takes a token and returns its reversed text
+def get_reversed(token):
+    return token.text[::-1]
+# Register the Token property extension "reversed" with the getter get_reversed
+Token.set_extension("reversed", getter=get_reversed)
+# Process the text and print the reversed attribute for each token
+doc = nlp("All generalizations are false, including this one.")
+for token in doc:
+    print("reversed:", token._.reversed)
+
+# example 3: 
+def get_wikipedia_url(span):
+    # Get a Wikipedia URL if the span has one of the labels
+    if span.label_ in ("PERSON", "ORG", "GPE", "LOCATION"):
+        entity_text = span.text.replace(" ", "_")
+        return "https://en.wikipedia.org/w/index.php?search=" + entity_text
+Span.set_extension('wikipedia_url', getter=get_wikipedia_url) # Set the Span extension wikipedia_url using the getter get_wikipedia_url
+doc = nlp("In over fifty years from his very first recordings right through to his "
+    "last album, David Bowie was at the vanguard of contemporary culture.")
+for ent in doc.ents:
+    print(ent.text, ent._.wikipedia_url) # Print the text and Wikipedia URL of the entity
+
+
+# method extensions make the extension attribute a callable method
+# let you pass arguments to extension function
+# Define method with arguments
+def has_token(doc, token_text):
+    in_doc = token_text in [token.text for token in doc]
+    return in_doc
+# Set extension on the Doc with method
+doc.set_extension("has_token", method=has_token)
+document = nlp("The sky is blue.")
+print(document._.has_token("blue"), "- blue")
+print(document._.has_token("cloud"), "- cloud")
+
+# example 2:
+# Define the method
+def to_html(span, tag):
+    # Wrap the span text in a HTML tag and return it
+    return f"<{tag}>{span.text}</{tag}>"
+# Register the Span method extension "to_html" with the method to_html
+Span.set_extension('to_html', method=to_html)
+# Process the text and call the to_html method on the span with the tag name "strong"
+doc = nlp("Hello world, this is a sentence.")
+span = doc[0:2]
+print(span._.to_html("strong"))
