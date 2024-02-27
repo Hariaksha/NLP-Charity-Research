@@ -21,10 +21,10 @@ def numToEIN(num):
     return ans
 
 def main():
-    # MUST CHANGE STATE ABBREVIATION FOUR TIMES IN THIS FUNCTION
-    filename = open('exempt_organizations/eo_nh.csv') # CHANGE
+    state = 'NE' # CHANGE
+    filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook('data/NH_data.xlsx') # CHANGE
+    workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
     for col in file:
@@ -44,9 +44,8 @@ def main():
         mission = '' if mission == 'This organization has not provided GuideStar with a mission statement.' else mission
         name = soup.find('h1', class_='profile-org-name').text.strip()
         url = '' if soup.find('a', class_='hide-print-url') == None else soup.find('a', class_='hide-print-url').text
-        # CHANGE
-        ws.append([ein, name, col['STREET'], col['CITY'], 'NH', col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
-    workbook.save('data/NH_data.xlsx') # CHANGE
+        ws.append([ein, name, col['STREET'], col['CITY'], state, col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
+    workbook.save(f'data/{state}_data.xlsx') 
     
 if __name__=="__main__":
     main()
