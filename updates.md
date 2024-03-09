@@ -43,3 +43,7 @@ Because I have updated spreadsheets to scrape from and my script can now get val
 **Wednesday 3/6/2024 - Hari**
 
 I met with Dr. Price yesterday to discuss methodology for the project. We need to find a way to characterize the mission statements as altruistic or donor-serving. Some missions statements use language like 'help you' or 'member-focused' (donor-serving, impure altruism) while others talk about how they will help society (society-serving, pure altruism). I will look at linguistics research papers to find ways to characterize mission statement text as pure or impure altruism. Hopefully there will be a quantifiable metric that I can get for each mission statement, which I can then correlate to revenue and income. Basically, the next step is linguistics research. Dr. Price also suggested that I meet with a Linguistics professor from UA to get insights.
+
+**Friday 3/8/2024 - Hari**
+
+Raeed and I met with Dr. Price today. We agreed that we would not worry about getting nonprofit mission statement data from other countries for now; we will process the American data first. Also, I shared the only relevant linguistics research paper that I could find. We will set up a meeting with a linguistics professor to gain more insight after Spring Break. Spring Break is this next week (3/11 to 3/15).
