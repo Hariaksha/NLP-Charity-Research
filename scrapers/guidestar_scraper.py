@@ -21,14 +21,14 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'MN' # CHANGE
+    state = 'TN' # CHANGE
     filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
     for col in file:
-        time.sleep(0.88) # 0.84 is too fast. 0.89 works
+        time.sleep(0.88) # 0.87 is too fast. 0.88 works
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         soup = get_request(link)
