@@ -1,7 +1,13 @@
 # Natural Language Toolkit - Python's API library for performing an array of tasks in human language
 # like classification, tokenization, stemming, tagging, Leparsing, semantic reasoning, etc.
+import re
+import string
+
+import nltk
 from nltk import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords          # module for stop words that come with NLTK
 from nltk.stem import PorterStemmer
+from nltk.tokenize import TweetTokenizer   # module for tokenizing strings
 from nltk.stem import WordNetLemmatizer
 from nltk import pos_tag
 
@@ -11,6 +17,11 @@ def tokenization():
     sentence = "GeeksforGeeks is a great learning platform. It is one of the best for Computer Science students."
     print(word_tokenize(sentence))
     print(sent_tokenize(sentence))
+
+    # instantiate your own tokenizer
+    tokenizer = TweetTokenizer(preserve_case=False, strip_handles=True, reduce_len=True)
+    sentence_tokens = tokenizer.tokenize("I ate the cookie.")
+    print(sentence_tokens)
 
 def canonicalization_notes():
     # we do not care about form of words, but about conveyed meaning of words
@@ -62,8 +73,19 @@ def POS_tagging():
     tags = tokens_tag = pos_tag(tokenized_text)
     print(tags)
 
+def stopwords_and_punctuation():
+    nltk.download('stopwords')
+    stopwords_english = stopwords.words('english') # sometimes must customize stop words list for our applications
+    print('Stop words\n')
+    print(stopwords_english)
+
+    print('\nPunctuation\n')
+    print(string.punctuation)
+
 def main():
     POS_tagging()
+    nltk.download('stopwords')
+
 
 if __name__=="__main__":
     main()
