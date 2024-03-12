@@ -86,6 +86,7 @@ def match_object_notes():
 
 def main():
     match_object_notes()
+    tweet2 = re.sub(r'https?://[^\s\n\r]+', '', tweet2) # remove hyperlinks
     return
 
 if __name__=="__main__":
