@@ -21,23 +21,25 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'WA' # CHANGE
+    state = 'MA' # CHANGE
     filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
     for col in file:
-        time.sleep(0.88) # 0.87 is too fast. 0.88 works
+        time.sleep(1) 
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         soup = get_request(link)
         while soup.title.text == "www.guidestar.org | 502: Bad gateway":
+            print("fixing 502 error")
             soup = get_request(link)
         print(ein, soup.title.text)
         if soup.title.text == "": 
             # if GuideStar does not have a page for this org, add it to the skipped list
             ws2.append([ein, col['NAME'], link])
+            print(f"Skipped: {ein} {soup.title.text}")
             continue
         mission = soup.find('p', id="mission-statement").text 
         if mission == "This organization has not provided GuideStar with a mission statement.":
