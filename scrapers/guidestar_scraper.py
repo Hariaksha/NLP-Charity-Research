@@ -32,7 +32,7 @@ def main():
         ein = numToEIN(int(col['EIN']))
         link = f"https://www.guidestar.org/profile/{ein}"
         soup = get_request(link)
-        while soup.title.text == "www.guidestar.org | 502: Bad gateway":
+        while soup.title.text == "www.guidestar.org | 502: Bad gateway" or soup.title.text == "502 Bad gateway":
             print("fixing 502 error")
             soup = get_request(link)
         while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
