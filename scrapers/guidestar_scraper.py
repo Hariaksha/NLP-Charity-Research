@@ -35,6 +35,10 @@ def main():
         while soup.title.text == "www.guidestar.org | 502: Bad gateway":
             print("fixing 502 error")
             soup = get_request(link)
+        while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
+            print("Access denied: Retrying in 30 seconds")
+            time.sleep(30)
+            soup = get_request(link)
         print(ein, soup.title.text)
         if soup.title.text == "": 
             # if GuideStar does not have a page for this org, add it to the skipped list
