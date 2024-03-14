@@ -6,7 +6,7 @@ Each mission statement was preprocessed and tokenized using spaCy's 'en_core_web
 
 **Preliminary Data Analysis**
 
-Before running our main analysis of labeling mission statement as more donor-serving or society-serving, we use the Quantitative Analysis of Textual Data R package (quanteda) to measure the linguistic richness and readability of each mission statement. We then find the relationship between each of these values and the revenue of each charity.
+Before running our main analysis of labeling mission statement as more donor-serving or society-serving, we use the Quantitative Analysis of Textual Data R package (quanteda) to measure the linguistic richness, linguistic readability, and mean sentence length of each mission statement. We then find the relationship between each of these values and the revenue of each charity.
 
 **Division of Data**
 
@@ -59,4 +59,16 @@ Before we begin our main analysis of the data, we organize our data by sectors a
 
 **Relating Mission Statement Language to Revenue**
 
-We use NLP and statistics to determine the relationship between mission statement language and revenue. We see what linguistic structures and keywords influence fundraising efforts. 
+We use NLP and statistics to determine the relationship between mission statement language and revenue. The specific linguistic structures that we distinguish between is donor-serving and society-serving language. Examples of varying mission statements are found below. 
+
+*Appeal to self (donor-serving, how does donating benefit you?):*
+To provide tools and for members to run their businesses efficiently and effectively, work safely, and be an advocate for the members.
+Render financial aid to members and their families in addition to support of Catholic various charities.
+The purpose of the Alliance for Performance Excellence is to educate its members in performance excellence and support their provision of performance excellence services and education to their clients.
+
+*Appeal to society (community-serving, how does donating benefit the world?):*
+The Society of St Vincent de Paul (SVP) Charity is a Christian voluntary organization working with poor and disadvantaged people. Inspired by our principal founder, Frederic Ozanam, and our patron, St Vincent de Paul, we seek to respond to the call every Christian receives to bring the love of Christ to those in need: "I was hungry and you gave me food" (Matthew 25). No work of charity is foreign to the society.
+Our mission is to provide support, information and an atmosphere where children who are fighting or have survived Retinoblastoma can socialize with other similarly affected children.
+"Helping people live in harmony with their environment. We offer Horticulture Therapy outreach programs and publish and sell books that meet our mission statement."
+
+After we find a measurement for the language of each mission statement, we will create a linear model correlating that variable with the revenue of each charity. This allows us to see if donor-serving or society-serving mission statements are more effective to increase charitable giving.
