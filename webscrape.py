@@ -58,7 +58,7 @@ def main():
             ws2.append([ein, col['NAME'], link])
             print(f"Skipped: {ein} {soup.title.text}")
             continue
-        mission = get_mission(soup)
+        mission = soup.find('p', id="mission-statement").text 
         if mission == "This organization has not provided GuideStar with a mission statement.":
             soup2 = get_request(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
             mission = mission if soup2.find('span', class_="not-truncate") == None else soup2.find('span', class_="not-truncate").text
