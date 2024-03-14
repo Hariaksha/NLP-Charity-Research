@@ -20,6 +20,14 @@ def numToEIN(num):
     ans = ans[0:2] + '-' + ans[2:]
     return ans
 
+def get_mission(website):
+    try:
+        return website.find('p', id='mission-statement').text
+    except:
+        local_time = time.localtime()
+        formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
+        print("Current Local Time: ", formatted_time)
+
 def main():
     state = 'WA' # CHANGE
     filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
@@ -50,7 +58,7 @@ def main():
             ws2.append([ein, col['NAME'], link])
             print(f"Skipped: {ein} {soup.title.text}")
             continue
-        mission = soup.find('p', id="mission-statement").text 
+        mission = get_mission(soup)
         if mission == "This organization has not provided GuideStar with a mission statement.":
             soup2 = get_request(f"https://www.charitynavigator.org/ein/{format(int(col['EIN']), '09d')}")
             mission = mission if soup2.find('span', class_="not-truncate") == None else soup2.find('span', class_="not-truncate").text
