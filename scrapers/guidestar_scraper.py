@@ -36,7 +36,7 @@ def main():
             print("fixing 502 bad gateway error")
             time.sleep(1)
             soup = get_request(link)
-        while soup.title.text == "www.guidestar.org | 504: Gateway time-out":
+        while soup.title.text == "www.guidestar.org | 504: Gateway time-out" or soup.title.text == "504: Gateway time-out":
             print("fixing 504 gateway time-out error")
             time.sleep(1)
             soup = get_request(link)
