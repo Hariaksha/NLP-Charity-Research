@@ -1,12 +1,12 @@
 **Data Collection**
 
-The research dataset consists of many tax-exempt organizations in the United States. The most important data for each organization are the mission statements and the revenue. We obtain the EINs, addresses, NTEE codes, and financial information from the [Internal Revenue Service (IRS)](https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf), which has information about all tax-exempt organizations in the United States organized in CSV files. The mission statements, organization names, and URLs were scraped from [GuideStar](https://www.guidestar.org/) and [Charity Navigator](https://www.charitynavigator.org/). The web scraper used to collect these data is titled 'guidestar_scraper.py' and is found in the 'scrapers' folder. This script uses the csv, requests, BeautifulSoup, time, and openpyxl Python libraries.
+The research dataset consists of many tax-exempt organizations in the United States. The most important data for each organization are the mission statements and the revenue. We obtain the EINs, addresses, NTEE codes, and financial information from the [Internal Revenue Service (IRS)](https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf), which has information about all tax-exempt organizations in the United States organized in CSV files. The mission statements, organization names, and URLs were scraped from [GuideStar](https://www.guidestar.org/) and [Charity Navigator](https://www.charitynavigator.org/). The web scraper used to collect these data is titled 'scraper.py'. This script uses the csv, requests, BeautifulSoup, time, and openpyxl Python libraries.
 
 Each mission statement was preprocessed and tokenized using spaCy's 'en_core_web_lg' English NLP model.  
 
 **Preliminary Data Analysis**
 
-Before running our main analysis of labeling mission statement as more donor-serving or society-serving, we use the Quantitative Analysis of Textual Data R package (quanteda) to measure the linguistic richness, linguistic readability, and mean sentence length of each mission statement. We then find the relationship between each of these values and the revenue of each charity.
+Before running our main analysis of labeling mission statement as more donor-serving or society-serving, we use the Quantitative Analysis of Textual Data R package (quanteda) to measure the linguistic richness, [linguistic readability](https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests), and mean sentence length of each mission statement. We then find the relationship between each of these values and the revenue of each charity.
 
 **Division of Data**
 
@@ -53,9 +53,7 @@ Before we begin our main analysis of the data, we organize our data by sectors a
 | 6          | 1,000,000 to 4,999,999    | 
 | 7          | 5,000,000  to  9,999,999  |
 | 8          |10,000,000  to  49,999,999 | 
-| 9          | 50,000,000 to greater      | 
-
-
+| 9          | 50,000,000 to greater     | 
 
 **Relating Mission Statement Language to Revenue**
 
