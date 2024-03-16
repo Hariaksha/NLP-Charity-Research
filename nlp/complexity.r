@@ -90,23 +90,39 @@ summary(revenue_MSL)
 # Statistical Analysis of mean sentence length with revenue. Cluster by states
 revenue_MSL = lm(mycorpus$Revenue ~ mycorpus$readability3$meanSentenceLength)
 clust_states_MSL = vcovHC(revenue_MSL, type="HC1", cluster = ~ mycorpus$State)
-summary_c_MSL = coeftest(revenue_Flesch, vcov = clust_states_MSL)
+summary_c_MSL = coeftest(revenue_MSL, vcov = clust_states_MSL)
 print(summary_c_MSL)
 
 # plot(coef(revenue_Flesch)[2])
-
-# data binning before making scatterplot
-mycorpus <- mycorpus %>% mutate(new_bin = cut(mycorpus$readability2$Flesch, breaks=100000))
 
 # Apply a logarithmic transformation to Revenue to reduce the impact of outliers
 # Adding a small constant to avoid taking the log of zero
 mycorpus$LogRevenue <- log(mycorpus$Revenue + 1)
 
-# Making a Scatter Plot with Linear Regression Line for Revenue and Flesch readability
-ggplot(mycorpus, aes(x = mycorpus$readability2$Flesch, y = LogRevenue)) +
+# Data binning and Making a Scatter Plot with Linear Regression Line for Revenue and Flesch readability.
+mycorpus_summary_Flesch <- mycorpus %>%
+  mutate(Flesch_bin = cut(readability2$Flesch, breaks = seq(min(readability2$Flesch, na.rm = TRUE), max(readability2$Flesch, na.rm = TRUE), length.out = 101), include.lowest = TRUE)) %>%
+  group_by(Flesch_bin) %>%
+  summarise(Avg_Flesch = mean(readability2$Flesch, na.rm = TRUE), Avg_Revenue = mean(Revenue, na.rm = TRUE)) %>%
+  ungroup()
+ggplot(mycorpus_summary_Flesch, aes(x = Avg_Flesch, y = Avg_Revenue)) +
   geom_point() + # Add points for scatter plot
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +  # Add linear regression line
   labs(x = "Flesch Readability Score", y = "Revenue", title = "Revenue vs Flesch Score") +
+  # xlim(-200, 300) +
+  # ylim(0, 12000000000) +
+  theme_minimal()  # Use minimal theme for cleaner visualization
+
+# Data binning and Making a Scatter Plot with Linear Regression Line for Revenue and mean sentence length.
+mycorpus_summary_MSL <- mycorpus %>%
+  mutate(MSL_bin = cut(readability3$meanSentenceLength, breaks = seq(min(readability3$meanSentenceLength, na.rm = TRUE), max(readability3$meanSentenceLength, na.rm = TRUE), length.out = 101), include.lowest = TRUE)) %>%
+  group_by(MSL_bin) %>%
+  summarise(Avg_MSL = mean(readability3$meanSentenceLength, na.rm = TRUE), Avg_Revenue = mean(Revenue, na.rm = TRUE)) %>%
+  ungroup()
+ggplot(mycorpus_summary_MSL, aes(x = Avg_MSL, y = Avg_Revenue)) +
+  geom_point() + # Add points for scatter plot
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +  # Add linear regression line
+  labs(x = "Mean Sentence Length", y = "Revenue", title = "Revenue vs Mean Sentence Length") +
   # xlim(-200, 300) +
   # ylim(0, 12000000000) +
   theme_minimal()  # Use minimal theme for cleaner visualization
@@ -124,11 +140,18 @@ clust_states_TTR = vcovHC(revenue_TTR, type="HC1", cluster = ~ mycorpus$State)
 summary_c_TTR = coeftest(revenue_TTR, vcov = clust_states_TTR)
 print(summary_c_TTR)
 
-# Making a Scatter Plot with Linear Regression Line for Revenue and TTR richness
-ggplot(mycorpus, aes(x = mycorpus$richness$TTR, y = LogRevenue)) +
+# Data binning and Making a Scatter Plot with Linear Regression Line for Revenue and TTR richness. make sure each bin has approximately equal number of data points.
+quantile_breaks <- quantile(mycorpus$richness$TTR, probs = seq(0, 1, length.out = 101), na.rm = TRUE)
+unique_breaks <- unique(quantile_breaks)
+mycorpus_summary_TTR <- mycorpus %>%
+  mutate(TTR_bin = cut(richness$TTR, breaks = unique_breaks, include.lowest = TRUE, labels=FALSE)) %>%
+  group_by(TTR_bin) %>%
+  summarise(Avg_TTR = mean(richness$TTR, na.rm = TRUE), Avg_Revenue = mean(Revenue, na.rm = TRUE)) %>%
+  ungroup()
+ggplot(mycorpus_summary_TTR, aes(x = Avg_TTR, y = Avg_Revenue)) +
   geom_point() + # Add points for scatter plot
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +  # Add linear regression line
-  labs(x = "Flesch Readability Score", y = "Log(Revenue)", title = "Revenue vs TTR Richness Score") +
+  labs(x = "Type-Token Ratio", y = "Revenue", title = "Revenue vs Type-Token Ratio") +
   # xlim(-200, 300) +
   # ylim(0, 12000000000) +
   theme_minimal()  # Use minimal theme for cleaner visualization
@@ -152,6 +175,21 @@ clust_states_HR = vcovHC(revenue_HR, type="HC1", cluster = ~ mycorpus$State)
 summary_c_HR = coeftest(revenue_HR, vcov = clust_states_HR)
 print(summary_c_HR)
 
+# Data binning and Making a Scatter Plot with Linear Regression Line for Revenue and Hapax richness. make sure each bin has approximately equal number of data points.
+quantile_breaks <- quantile(mycorpus$hapax_richness, probs = seq(0, 1, length.out = 101), na.rm = TRUE)
+unique_breaks <- unique(quantile_breaks)
+mycorpus_summary_HR <- mycorpus %>%
+  mutate(HR_bin = cut(hapax_richness, breaks = unique_breaks, include.lowest = TRUE, labels=FALSE)) %>%
+  group_by(HR_bin) %>%
+  summarise(Avg_HR = mean(hapax_richness, na.rm = TRUE), Avg_Revenue = mean(Revenue, na.rm = TRUE)) %>%
+  ungroup()
+ggplot(mycorpus_summary_HR, aes(x = Avg_HR, y = Avg_Revenue)) +
+  geom_point() + # Add points for scatter plot
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +  # Add linear regression line
+  labs(x = "Hapax Richness", y = "Revenue", title = "Revenue vs Hapax Richness") +
+  # xlim(-200, 300) +
+  # ylim(0, 12000000000) +
+  theme_minimal()  # Use minimal theme for cleaner visualization
 
 
 
