@@ -17,14 +17,14 @@ setwd("~/Repositories/NLP Charity Research")
 # Read Excel spreadsheet file
 mycorpus = read_excel("data/preliminary_march_data/data.xlsx")
 
-# Optional: Remove rows where revenue is 0
-mycorpus = mycorpus[mycorpus$Revenue != 0,]
+# Optional: Remove rows based on revenue
+mycorpus = mycorpus[mycorpus$Revenue > 0,]
 
 # Add a new column to the dataframe with the word count for each mission statement
 mycorpus <- mycorpus %>% mutate(word_count = str_count(mycorpus$`Mission Statement`, "\\S+"))
 
-# Optional: Remove rows where unprocessed mission statements have less than 3 words
-mycorpus = mycorpus[mycorpus$word_count > 3,]
+# Optional: Remove rows based on word count of unprocessed mission statements
+mycorpus = mycorpus[mycorpus$word_count > 6,]
 
 # Creating a corpus or dataset/frame
 mission <- corpus(mycorpus$`Mission Statement`, text_field = "text")
@@ -42,10 +42,6 @@ tok <- tokens_tolower(tok)
 tok <- tokens_select(tok, stopwords("english"), selection = "remove", padding = FALSE)
 
 # Find Readability Metrics Section
-# readability <- textstat_readability(mission, c("meanSentenceLength","meanWordSyllables", "Flesch.Kincaid", "Flesch"), remove_hyphens = TRUE,
-#                                     min_sentence_length = 1, max_sentence_length = 10000,
-#                                     intermediate = FALSE)
-
 # Find Flesch-Kincaid readability scores. Lower numbers = easier to read
 mycorpus$readability <- textstat_readability(mission, "Flesch.Kincaid", remove_hyphens = TRUE,
                                              min_sentence_length = 1, max_sentence_length = 10000,
@@ -60,6 +56,9 @@ mycorpus$readability2 <- textstat_readability(mission, "Flesch", remove_hyphens 
 mycorpus$readability3 <- textstat_readability(mission, "meanSentenceLength", remove_hyphens = TRUE,
                                              min_sentence_length = 1, max_sentence_length = 10000,
                                              intermediate = FALSE)
+
+# Optional: Adjust data to remove outliers or correct extreme values in Flesch scores
+mycorpus <- mycorpus %>% filter(mycorpus$readability2$Flesch > -1, mycorpus$readability2$Flesch < 101)
 
 # Turn revenue column from spreadsheet to numbers from strings
 # as.numeric(mycorpus$Revenue)
@@ -99,22 +98,11 @@ print(summary_c_MSL)
 # data binning before making scatterplot
 mycorpus <- mycorpus %>% mutate(new_bin = cut(mycorpus$readability2$Flesch, breaks=100000))
 
-# Adjust data to remove outliers or correct extreme values
-mycorpus <- mycorpus %>%
-  filter(mycorpus$readability2$Flesch > -1, mycorpus$readability2$Flesch < 101)
-
 # Apply a logarithmic transformation to Revenue to reduce the impact of outliers
 # Adding a small constant to avoid taking the log of zero
 mycorpus$LogRevenue <- log(mycorpus$Revenue + 1)
 
 # Making a Scatter Plot with Linear Regression Line for Revenue and Flesch readability
-# plot(x = mycorpus$readability2$Flesch, y = mycorpus$Revenue,
-#      xlab = "Flesch Readability Score",
-#      ylab = "Revenue",
-#      xlim = c(-100, 100),
-#      ylim = c(0,100000000),        
-#      main = "Revenue vs Flesch Score"
-# )
 ggplot(mycorpus, aes(x = mycorpus$readability2$Flesch, y = LogRevenue)) +
   geom_point() + # Add points for scatter plot
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +  # Add linear regression line
@@ -145,11 +133,24 @@ ggplot(mycorpus, aes(x = mycorpus$richness$TTR, y = LogRevenue)) +
   # ylim(0, 12000000000) +
   theme_minimal()  # Use minimal theme for cleaner visualization
 
-
-
 # Measuring Richness with Hapax Richness
+dfm_object = dfm(tok)
+hapax_counts = rowSums(dfm_object == 1)
+total_tokens = ntoken(dfm_object)
+mycorpus$hapax_richness = hapax_counts / total_tokens
 
+# rowSums(mycorpus$dfm == 1) %>% head()
+# mycorpus$richness2 = rowSums(mycorpus$dfm == 1/ntoken(mycorpus$dfm))
 
+# Statistical Analysis of Hapax Richness with revenue
+revenue_HR = lm(mycorpus$Revenue ~ mycorpus$hapax_richness)
+summary(revenue_HR)
+
+# Statistical Analysis of Hapax Richness with revenue. Cluster by states
+revenue_HR = lm(mycorpus$Revenue ~ mycorpus$hapax_richness)
+clust_states_HR = vcovHC(revenue_HR, type="HC1", cluster = ~ mycorpus$State)
+summary_c_HR = coeftest(revenue_HR, vcov = clust_states_HR)
+print(summary_c_HR)
 
 
 
