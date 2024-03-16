@@ -16,7 +16,7 @@ print("opened workbook 2")
 count = 0
 for i in range(2, ws.max_row + 1):
     print(i)
-    if count == 3000:
+    if count == 500:
         break
     mission = str(ws[f'P{i}'].value)
     ein = ws[f'A{i}'].value
@@ -30,3 +30,4 @@ for i in range(2, ws.max_row + 1):
     count += 1
 
 workbook2.save('nlp/preprocessed-missions.xlsx')
+print("saved")
