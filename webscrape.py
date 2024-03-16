@@ -20,14 +20,6 @@ def numToEIN(num):
     ans = ans[0:2] + '-' + ans[2:]
     return ans
 
-def get_mission(website):
-    try:
-        return website.find('p', id='mission-statement').text
-    except:
-        local_time = time.localtime()
-        formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
-        print("Current Local Time: ", formatted_time)
-
 def main():
     state = 'WA' # CHANGE
     filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
@@ -49,8 +41,8 @@ def main():
             time.sleep(1)
             soup = get_request(link)
         while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
-            print("Access denied: Retrying in 30 seconds")
-            time.sleep(30)
+            print("Access denied: Retrying in 10 seconds")
+            time.sleep(10)
             soup = get_request(link)
         print(ein, soup.title.text)
         if soup.title.text == "": 
