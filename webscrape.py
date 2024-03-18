@@ -11,7 +11,7 @@ def get_request(link):
             ans = BeautifulSoup(x.content, 'html.parser')
             break
         except:
-            print('Connection lost')
+            print('Connection lost. Retrying in 10 seconds.')
             time.sleep(10)
     return ans
 
@@ -21,8 +21,8 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'WA' # CHANGE
-    filename = open(f'exempt_organizations/eo_{state.lower()}.csv') 
+    state = 'IN' # CHANGE
+    filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
     ws = workbook.active
