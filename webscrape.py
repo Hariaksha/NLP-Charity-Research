@@ -22,7 +22,7 @@ def numToEIN(num):
 
 def main():
     state = 'IN' # CHANGE
-    filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
+    filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}2.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
     ws = workbook.active
