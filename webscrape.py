@@ -21,7 +21,7 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'MD' # CHANGE
+    state = 'IN' # CHANGE
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
@@ -40,6 +40,10 @@ def main():
                 soup = get_request(link)
             while soup.title.text == "www.guidestar.org | 504: Gateway time-out" or soup.title.text == "504: Gateway time-out":
                 print("fixing 504 gateway time-out error")
+                time.sleep(1)
+                soup = get_request(link)
+            while soup.title.text == "www.guidestar.org | 520: Web server is returning an unknown error":
+                print("web server encountered unknown error.")
                 time.sleep(1)
                 soup = get_request(link)
             while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
