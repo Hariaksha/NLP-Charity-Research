@@ -21,10 +21,10 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'MD' # CHANGE
+    state = 'IN' # CHANGE
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
-    workbook = openpyxl.load_workbook(f'data/{state}_data.xlsx')
+    workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
     print("Press 'Ctrl-C' to exit the loop")
@@ -40,6 +40,10 @@ def main():
                 soup = get_request(link)
             while soup.title.text == "www.guidestar.org | 504: Gateway time-out" or soup.title.text == "504: Gateway time-out":
                 print("fixing 504 gateway time-out error")
+                time.sleep(1)
+                soup = get_request(link)
+            while soup.title.text == "www.guidestar.org | 520: Web server is returning an unknown error":
+                print("web server encountered unknown error.")
                 time.sleep(1)
                 soup = get_request(link)
             while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
@@ -62,7 +66,7 @@ def main():
             ws.append([ein, name, col['STREET'], col['CITY'], state, col['ZIP'], link, url, col['NTEE_CD'], col['DEDUCTIBILITY'], col['ASSET_CD'], col['ASSET_AMT'], col['INCOME_CD'], col['INCOME_AMT'], col['REVENUE_AMT'], mission])
     except KeyboardInterrupt:
         pass
-    workbook.save(f'data/{state}_data.xlsx') 
+    workbook.save(f'data/{state.upper()}_data.xlsx') 
     print("Saved")
 
 if __name__=="__main__":
