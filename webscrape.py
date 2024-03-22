@@ -21,7 +21,7 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'IN' # CHANGE
+    state = 'TN' # CHANGE
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
@@ -34,20 +34,17 @@ def main():
             ein = numToEIN(int(col['EIN']))
             link = f"https://www.guidestar.org/profile/{ein}"
             soup = get_request(link)
-            while soup.title.text == "www.guidestar.org | 502: Bad gateway" or soup.title.text == "502 Bad Gateway":
-                print("fixing 502 bad gateway error")
-                time.sleep(1)
-                soup = get_request(link)
-            while soup.title.text == "www.guidestar.org | 504: Gateway time-out" or soup.title.text == "504: Gateway time-out":
-                print("fixing 504 gateway time-out error")
-                time.sleep(1)
-                soup = get_request(link)
-            while soup.title.text == "www.guidestar.org | 520: Web server is returning an unknown error":
-                print("web server encountered unknown error.")
-                time.sleep(1)
-                soup = get_request(link)
-            while soup.title.text == "Access denied | www.guidestar.org used Cloudflare to restrict access":
-                print("Access denied: Retrying in 10 seconds")
+            errors = {
+                "www.guidestar.org | 502: Bad gateway": "fixing 502 bad gateway error",
+                "502 Bad Gateway": "fixing 502 bad gateway error",
+                "www.guidestar.org | 504: Gateway time-out": "fixing 504 gateway time-out error",
+                "504: Gateway time-out": "fixing 504 gateway time-out error",
+                "www.guidestar.org | 520: Web server is returning an unknown error": "web server encountered unknown error.",
+                "Access denied | www.guidestar.org used Cloudflare to restrict access": "Access denied"
+            }
+            while soup.title.text in errors:
+                print(errors[soup.title.text])
+                print("Retrying in 10 seconds.")
                 time.sleep(10)
                 soup = get_request(link)
             print(ein, soup.title.text)
