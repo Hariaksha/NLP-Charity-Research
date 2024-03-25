@@ -21,12 +21,13 @@ def numToEIN(num):
     return ans
 
 def main():
-    state = 'TN' # CHANGE
+    state = 'PA' # CHANGE
     filename = open(f'data/american/irs-exempt-orgs/eo_{state.lower()}.csv') 
     file = csv.DictReader(filename)
     workbook = openpyxl.load_workbook(f'data/{state.upper()}_data.xlsx')
     ws = workbook.active
     ws2 = workbook['Skipped']
+    count = 0
     print("Press 'Ctrl-C' to exit the loop")
     try:
         for col in file:
@@ -47,7 +48,7 @@ def main():
                 print("Retrying in 10 seconds.")
                 time.sleep(10)
                 soup = get_request(link)
-            print(ein, soup.title.text)
+            print(count, ein, soup.title.text)
             if soup.title.text == "": 
                 # if GuideStar does not have a page for this org, add it to the skipped list
                 ws2.append([ein, col['NAME'], link])
@@ -64,7 +65,7 @@ def main():
     except KeyboardInterrupt:
         pass
     workbook.save(f'data/{state.upper()}_data.xlsx') 
-    print("Saved")
+    print("Saved", count)
 
 if __name__=="__main__":
     main()
