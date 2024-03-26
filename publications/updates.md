@@ -55,3 +55,11 @@ I created a master spreadsheet with the states that I have so far to run some pr
 **Tuesday 3/19/2024 - Hari**
 
 I bought and set up a Raspberry Pi, and I am able to access it while my computer is on the same network. For some reason, Cloudflare stops me from running the web scraper on that, so I have to use NordVPN on the Pi. However, as soon as I connect to a VPN, I lose access to the Pi and am disconnected because my device and the Pi are no longer on the same network. I started the Python script, and then I ran a command to connect to a VPN, pause the terminal for 24 hours, and then disconnect the VPN, after which Cloudflare will start to block the webscraping again, but I will be able to access the Pi again to check progress and redo the terminal commands. I will see how that script is going tomorrow.
+
+**Tuesday 3/26/2024 - Hari**
+
+I presented my research at URCA, which went well. The judges did not grill me too hard, but I answered their questions well. It was a fun experience.
+
+My RaspberryPi has some issues with web scraping, but I will continue to troubleshoot that to fix issues. That will let me generate data faster.
+
+I compared machine learning frameworks that I could use. There are many useful Python libraries, such as TensorFlow, PyTorch, Keras, MXNet, CNTK, etc. The best things that I found were IBM Watson Natural Language Understanding and the Python libraries TensorFlow and PyTorch. I decided not to use IBM's NLU product because it is only free for about 30K NLU items a month, and we will have at least 500K mission statements to analyze. I will learn TensorFlow first (starting today) and see if that is useful for our purposes before considering PyTorch.
