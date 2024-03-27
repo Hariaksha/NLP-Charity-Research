@@ -2,7 +2,7 @@ import spacy
 from spacy.tokens import doc
 import openpyxl
 
-nlp = spacy.load('en_core_web_md')
+nlp = spacy.load('en_core_web_lg')
 print("Loaded model")
 
 workbook = openpyxl.load_workbook('data/preliminary_march_data/data.xlsx')
