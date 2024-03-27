@@ -1,15 +1,15 @@
 I started this project in January 2024 with Dr. Michael Price, a Professor of Economics at The University of Alabama with research projects related to charitable giving.
 
-The project involves gathering mission statements from tax-exempt organizations (nonprofits/charities) from the United States, the United Kingdom, Australia, and Canada. We used the Python requests and BeautifulSoup libraries to accomplish this with web scraping. The United States data was scraped from GuideStar and Charity Navigator. The main scraper that we used is titled 'guidestar_scraper.py' and is found in the 'scrapers' folder. 
+The project involves gathering mission statements from tax-exempt organizations (nonprofits/charities) from the United States, the United Kingdom, Australia, and Canada. We used the Python requests and BeautifulSoup libraries to accomplish this with web scraping. The United States data was scraped from the Internal Revenue Service, GuideStar, and Charity Navigator. The file 'webscrape.py' is used to scrape and store data.
 
-Afterwards, we used Natural Language Processing techniques to identify patterns among these mission statements, with the goal of seeing how mission statements impact fundraising. We hope that this research benefits future charitable giving.
+Afterwards, we use Natural Language Processing techniques to identify patterns among these mission statements, with the goal of seeing how mission statements impact fundraising. We hope that this research benefits future charitable giving. We preprocess text with the SpaCy library and calculate linguistic readability and richness features with the R package quanteda (Quantitative Textual Data Analysis).
 
-The 'tutorials' folder contains files that I used to learn how to use various libraries, particularly the libraries involving Natural Language Processing tasks. 
+The data (mission statements, EINs, nonprofits' names, etc.) are found in the 'data' folder. The United States data are found in the 'american' folder and organized by states and sectors and labeled as abbreviation_data.xlsx (example: AL_data.xlsx). There is also a master spreadsheet that combines the information from all of the 51 other spreadsheets. The folder 'irs-exempt-orgs' contains financial data from the IRS. 
 
-The 'scrapers' folder contains Python web scraping scripts, but this project only uses the one titled 'guidestar_scraper.py'.
+The 'literature' folder contains past research that I considered helpful when beginning this project, as well as a small literature review.
 
-The 'exempt_organizations' folder contains information in CSV files from the United States Internal Revenue Service about tax-exempt organizations. This data was very useful in finding mission statements because they provide the EINs for every tax-exempt organization in the United States, separated by states and D.C. The folder also contains an info PDF file that explains the meaning of each data field in the CSV files.
+The 'nlp' folder contains scripts that I wrote to perform various Natural Language Processing tasks, such as preprocessing text, building machine learning models, calculating linguistic complexity metrics such as readability and richness scores, and finding keywords.
 
-The data (mission statements, EINs, nonprofits' names, etc.) are found in the 'data' folder. The United States data are organized by states and D.C. and labeled as (state abbreviation)_data.xlsx (example: AL_data.xlsx). There is also a master spreadsheet that combines the information from all of the 51 other spreadsheets.
+The 'publications' folder includes the posters and writings that I will use to write relevant papers, posters, and presentations to showcase my work. This research has been presented at The University of Alabama's Undergraduate Research and Creative Activity (URCA) Conference, and I will apply to present at additional conferences.
 
-For any questions regarding this research, please feel free to email me: hgunda@crimson.ua.edu
+For any questions regarding this research, please feel free to email me: hgunda@crimson.ua.edu.
